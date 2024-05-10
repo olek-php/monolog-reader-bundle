@@ -1,8 +1,8 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle\Reader;
+namespace OlekPhp\Bundle\MonologBundle\Reader;
 
-use TaxiAdmin\Bundle\MonologReaderBundle\Parser\ParserInterface;
+use OlekPhp\Bundle\MonologBundle\Parser\ParserInterface;
 
 interface ReaderInterface
 {

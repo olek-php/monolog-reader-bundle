@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TaxiAdmin\\Bundle\\MonologBundle\\": "src/"
+      "OlekPhp\\Bundle\\MonologBundle\\": "src/"
     }
   }
 }
