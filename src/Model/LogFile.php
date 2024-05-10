@@ -1,10 +1,8 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle\Model;
+namespace OlekPhp\Bundle\MonologBundle\Model;
 
-use ArrayIterator;
-
-class Log
+class LogFile
 {
     private int $id = 0;
     private string $path;
@@ -12,8 +10,6 @@ class Log
     private int $days = 0;
     private ?string $pattern = null;
     private ?string $dateFormat = null;
-    private bool $useChannel = true;
-    private bool $useLevel = true;
     private array $levels = [
         "debug" => "DEBUG",
         "info" => "INFO",
@@ -27,7 +23,6 @@ class Log
     private ?int $size = null;
     private ?string $mTime = null;
     private bool $exists = true;
-    private bool $useCarbon = false;
 
     public function getId(): int
     {
@@ -87,26 +82,6 @@ class Log
     public function setDateFormat(?string $dateFormat): void
     {
         $this->dateFormat = $dateFormat;
-    }
-
-    public function isUseChannel(): bool
-    {
-        return $this->useChannel;
-    }
-
-    public function setUseChannel(bool $useChannel): void
-    {
-        $this->useChannel = $useChannel;
-    }
-
-    public function isUseLevel(): bool
-    {
-        return $this->useLevel;
-    }
-
-    public function setUseLevel(bool $useLevel): void
-    {
-        $this->useLevel = $useLevel;
     }
 
     public function getLevels(): array

@@ -1,10 +1,11 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle\Parser;
+namespace OlekPhp\Bundle\MonologBundle\Parser;
 
 use DateTime;
 use DateTimeImmutable;
 use Exception;
+use OlekPhp\Bundle\MonologBundle\Model\LogLine;
 use RuntimeException;
 
 class Parser implements ParserInterface
@@ -12,7 +13,7 @@ class Parser implements ParserInterface
 
     public const PATTERN_MONOLOG2 =
         "/^" . // start with newline
-        "\[(?<datetime>.*)\] " . // find the date that is between two brackets []
+        "\[(?<date>.*)\] " . // find the date that is between two brackets []
         "(?<channel>[\w-]+).(?<level>\w+): " . // get the channel and log level, they look lilke this: channel.ERROR, follow by colon and space
         "(?<message>[^\[\{\\n]+)" . // next up is the message (containing anything except [ or {, nor a new line)
         "(?:(?<context> (\[.*?\]|\{.*?\}))|)" . // followed by a space and anything (non-greedy) in either square [] or curly {} brackets, or nothing at all (skips ahead to line end)
@@ -21,7 +22,7 @@ class Parser implements ParserInterface
 
     public const PATTERN_MONOLOG2_MULTILINE = // same as PATTERN_MONOLOG2 except for annotated changed
         "/^" .
-        "\[(?<datetime>[^\]]*)\] " . // allow anything until the first closing bracket ]
+        "\[(?<date>[^\]]*)\] " . // allow anything until the first closing bracket ]
         "(?<channel>[\w-]+).(?<level>\w+): " .
         "(?<message>[^\[\{]+)" . // allow \n character in message string
         "(?:(?<context> (\[.*?\]|\{.*?\}))|)" .
@@ -45,49 +46,48 @@ class Parser implements ParserInterface
         string $pattern = "default",
         bool $jsonAsText = false,
         bool $jsonFailSoft = true
-    ): array
+    ): ?LogLine
     {
         if ($line === "") {
-            return [];
+            return null;
         }
         preg_match($this->pattern[$pattern], $line, $data);
-        if (!isset($data["datetime"])) {
-            return [];
+        if (!isset($data["date"])) {
+            return null;
         }
 
-        $dateTime = null;
+        $date = null;
         if ($dateFormat === null) {
             try {
-                $dateTime = new DateTimeImmutable($data["datetime"]);
+                $date = new DateTimeImmutable($data["date"]);
             } catch (Exception $e) {
             }
         } else {
-            $dateTime = DateTimeImmutable::createFromFormat($dateFormat, $data["datetime"]);
+            $date = DateTimeImmutable::createFromFormat($dateFormat, $data["date"]);
         }
 
+        $result = new LogLine();
+        $result->createdAt = $date;
+        $result->channel   = $data['channel'] ?? "";
+        $result->level     = $data['level'] ?? "";
+        $result->message   = trim($data["message"] ?? "");
+        $result->context   = $this->processJson($data["context"] ?? "[]");
+        $result->extra     = $this->processJson($data["extra"] ?? "[]");
 
-        $result = [
-            "dateTime"  => $dateTime,
-            "channel"   => $data['channel'] ?? "",
-            "level"     => $data['level'] ?? "",
-            "message"   => trim($data["message"] ?? ""),
-            "context"   => $this->processJson($data["context"] ?? "[]"),
-            "extra"     => $this->processJson($data["extra"] ?? "[]"),
-        ];
 
         if (0 === $days) {
             return $result;
         }
-        if ($dateTime instanceof DateTime) {
+        if ($date instanceof DateTime) {
             $d2 = new DateTime('now');
 
-            if ($dateTime->diff($d2)->days < $days) {
+            if ($date->diff($d2)->days < $days) {
                 return $result;
             }
 
-            return [];
+            return null;
         }
-        return [];
+        return null;
     }
 
     /**
@@ -116,7 +116,7 @@ class Parser implements ParserInterface
         }
         // and let's typecast this if it's not array or object
         if (!is_array($array) && !($array instanceof \stdClass) && $array !== null) {
-            // simply put it into a an array
+            // simply put it into an array
             $array = [$array];
         }
         return $array;

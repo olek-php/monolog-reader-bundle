@@ -1,10 +1,10 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle;
+namespace OlekPhp\Bundle\MonologBundle;
 
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use TaxiAdmin\Bundle\MonologReaderBundle\DependencyInjection\MonologReaderExtension;
+use OlekPhp\Bundle\MonologBundle\DependencyInjection\MonologReaderExtension;
 
 class MonologReaderBundle extends Bundle
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle\Reader;
+namespace OlekPhp\Bundle\MonologBundle\Reader;
 
 use ArrayAccess;
 use Countable;
 use Iterator;
-use TaxiAdmin\Bundle\MonologReaderBundle\Parser\Parser;
-use TaxiAdmin\Bundle\MonologReaderBundle\Parser\ParserInterface;
+use OlekPhp\Bundle\MonologBundle\Parser\Parser;
+use OlekPhp\Bundle\MonologBundle\Parser\ParserInterface;
 
 abstract class AbstractReader implements ReaderInterface, Iterator, ArrayAccess, Countable
 {

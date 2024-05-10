@@ -1,26 +1,25 @@
 <?php
 
-namespace TaxiAdmin\Bundle\MonologReaderBundle\Reader;
+namespace OlekPhp\Bundle\MonologBundle\Reader;
 
 use Exception;
+use OlekPhp\Bundle\MonologBundle\Model\LogLine;
 use RuntimeException;
 use SplFileObject;
-use TaxiAdmin\Bundle\MonologReaderBundle\Model\Log;
+use OlekPhp\Bundle\MonologBundle\Model\LogFile;
 
 class Reader extends AbstractReader
 {
-    protected Log $log;
+    protected LogFile $log;
     protected SplFileObject $file;
     protected int $lineCount;
 
     public int $days;
     public string $pattern;
     public ?string $dateFormat;
-    public bool $useChannel;
-    public bool $useLevel;
 
 
-    public function __construct(Log $log, string $pattern = "default")
+    public function __construct(LogFile $log, string $pattern = "default")
     {
         $this->log = $log;
         $this->file = new SplFileObject($log->getPath(), 'r');
@@ -34,8 +33,6 @@ class Reader extends AbstractReader
         $this->days = $log->getDays();
         $this->pattern = $pattern;
         $this->dateFormat = $log->getDateFormat();
-        $this->useChannel = $log->isUseChannel();
-        $this->useLevel = $log->isUseLevel();
 
         $this->lineCount = $i;
 
@@ -61,7 +58,7 @@ class Reader extends AbstractReader
      * {@inheritdoc}
      * @throws Exception
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?LogLine
     {
         $key = $this->file->key();
         $this->file->seek($offset);
@@ -108,7 +105,7 @@ class Reader extends AbstractReader
      * {@inheritdoc}
      * @throws Exception
      */
-    public function current()
+    public function current(): ?LogLine
     {
         return $this->getParser()->parse($this->file->current(), $this->dateFormat, $this->days, $this->pattern, '');
     }
