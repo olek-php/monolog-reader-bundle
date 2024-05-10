@@ -1,5 +1,5 @@
 {
-  "name": "olek-php/monolog-parser",
+  "name": "olek-php/monolog-reader-bundle",
   "type": "symfony-bundle",
   "version": "0.0.1",
   "license": "MIT",
