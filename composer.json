@@ -1,7 +1,7 @@
 {
   "name": "olek-php/monolog-parser",
   "type": "symfony-bundle",
-  "version": "0.1",
+  "version": "0.0.1",
   "license": "MIT",
   "authors": [
     {
