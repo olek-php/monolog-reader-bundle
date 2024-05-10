@@ -1,0 +1,20 @@
+{
+  "name": "olek-php/monolog-parser",
+  "type": "symfony-bundle",
+  "version": "0.0.1",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleksandr Riabenko"
+    }
+  ],
+  "require": {
+    "php": ">=7.4||^8.2",
+    "symfony/framework-bundle": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "TaxiAdmin\\Bundle\\MonologBundle\\": "src/"
+    }
+  }
+}
