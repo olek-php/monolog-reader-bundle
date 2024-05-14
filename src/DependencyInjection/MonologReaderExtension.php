@@ -21,7 +21,6 @@ class MonologReaderExtension extends Extension
             ->addArgument(new Reference("parameter_bag"))
             ->addArgument($config["line_pattern"])
             ->addArgument($config["date_format"])
-            ->addTag('console.command')
         ;
     }
 
