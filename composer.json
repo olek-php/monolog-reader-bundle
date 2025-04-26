@@ -9,8 +9,12 @@
     }
   ],
   "require": {
-    "php": ">=7.4||^8.2",
-    "symfony/framework-bundle": "^5.4"
+    "php": "^8.2",
+    "symfony/framework-bundle": "^7.2"
+  }
+  ,
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {
